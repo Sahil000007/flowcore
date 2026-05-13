@@ -1,0 +1,47 @@
+.gitignore content:
+# Backend
+flowcore-backend/target/
+flowcore-backend/.classpath
+flowcore-backend/.project
+flowcore-backend/.settings/
+flowcore-backend/*.log
+flowcore-backend/.idea/
+flowcore-backend/*.iml
+
+# Frontend
+flowcore-frontend/node_modules/
+flowcore-frontend/dist/
+flowcore-frontend/.env
+flowcore-frontend/.env.local
+flowcore-frontend/.env.*.local
+flowcore-frontend/dist-ssr
+flowcore-frontend/*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
