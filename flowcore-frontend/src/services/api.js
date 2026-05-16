@@ -40,4 +40,24 @@ export const siteService = {
   delete: (id) => api.delete(`/sites/${id}`),
 };
 
+// Attendance endpoints
+export const attendanceService = {
+  getAll: () => api.get('/attendance'),
+  getById: (id) => api.get(`/attendance/${id}`),
+  create: (attendance) => api.post('/attendance', attendance),
+  update: (id, attendance) => api.put(`/attendance/${id}`, attendance),
+  delete: (id) => api.delete(`/attendance/${id}`),
+};
+
+// Salary endpoints
+export const salaryService = {
+  getAll: () => api.get('/salary'),
+  getById: (id) => api.get(`/salary/${id}`),
+  create: (salary) => api.post('/salary', salary),
+  update: (id, salary) => api.put(`/salary/${id}`, salary),
+  delete: (id) => api.delete(`/salary/${id}`),
+  getByWorker: (workerId) => api.get(`/salary/worker/${workerId}`),
+  getByDateRange: (startDate, endDate) => api.get('/salary/report', { params: { startDate, endDate } }),
+};
+
 export default api;

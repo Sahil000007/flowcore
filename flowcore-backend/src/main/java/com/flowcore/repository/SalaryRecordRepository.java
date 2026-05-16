@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface SalaryRecordRepository extends JpaRepository<SalaryRecord, Long> {
     List<SalaryRecord> findByWorker(Worker worker);
+    List<SalaryRecord> findByPayrollDate(LocalDate payrollDate);
     List<SalaryRecord> findByPayrollDateBetween(LocalDate startDate, LocalDate endDate);
     List<SalaryRecord> findByPaymentStatus(SalaryRecord.PaymentStatus status);
 }

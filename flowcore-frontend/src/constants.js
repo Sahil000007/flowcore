@@ -3,10 +3,66 @@
  * These define the structure of data used throughout the application
  */
 
+// Worker Status
 export const WORKER_STATUS = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
   ON_LEAVE: 'ON_LEAVE',
+};
+
+// Attendance Status Options
+export const ATTENDANCE_STATUS = {
+  PRESENT: 'PRESENT',
+  ABSENT: 'ABSENT',
+  HALF_DAY: 'HALF_DAY',
+  OVERTIME: 'OVERTIME',
+  LEAVE: 'LEAVE',
+};
+
+// Site Status Options
+export const SITE_STATUS = {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  ON_HOLD: 'ON_HOLD',
+  CANCELLED: 'CANCELLED',
+};
+
+// Salary Status Options
+export const SALARY_STATUS = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  PAID: 'PAID',
+  CANCELLED: 'CANCELLED',
+};
+
+// User Roles
+export const USER_ROLES = {
+  ADMIN: 'ADMIN',
+  MANAGER: 'MANAGER',
+  SUPERVISOR: 'SUPERVISOR',
+  WORKER: 'WORKER',
+};
+
+// Common API Constants
+export const API_BASE_URL = 'http://localhost:8080/api';
+export const API_TIMEOUT = 30000; // 30 seconds
+
+// Pagination
+export const PAGE_SIZE = 10;
+export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
+
+// Date Formats
+export const DATE_FORMAT = 'YYYY-MM-DD';
+export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+export const MONTH_FORMAT = 'YYYY-MM';
+
+// Messages
+export const MESSAGES = {
+  SUCCESS: 'Operation completed successfully!',
+  ERROR: 'Something went wrong. Please try again.',
+  CONFIRM_DELETE: 'Are you sure you want to delete this record?',
+  NO_DATA: 'No data available.',
+  LOADING: 'Loading...',
 };
 
 export const SITE_STATUS = {

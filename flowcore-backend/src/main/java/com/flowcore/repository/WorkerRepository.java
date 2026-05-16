@@ -12,5 +12,8 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     Optional<Worker> findByPhone(String phone);
     Optional<Worker> findByAadhaarId(String aadhaarId);
     List<Worker> findByActive(Boolean active);
+    List<Worker> findByActiveTrue();
     List<Worker> findBySkill(String skill);
+    boolean existsByPhone(String phone);
+    boolean existsByAadhaarId(String aadhaarId);
 }
