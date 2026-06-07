@@ -122,17 +122,17 @@ CREATE TABLE IF NOT EXISTS salary_records (
     INDEX idx_payment_status (payment_status)
 );
 
--- Insert sample admin user
+-- Insert sample admin user (password: password)
 INSERT INTO users (username, password, email, first_name, last_name, role, active) 
-VALUES ('admin', '$2a$10$slYQmyNdGzSqKYgxDfGc4OPPX0eGf9vGCmNm1kU0xLrN8J8jWdU3K', 'admin@flowcore.com', 'Admin', 'User', 'ADMIN', true)
+VALUES ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36gBS/O.', 'admin@flowcore.com', 'Admin', 'User', 'ADMIN', true)
 ON DUPLICATE KEY UPDATE username=username;
 
--- Insert sample supervisor user
+-- Insert sample supervisor user (password: password)
 INSERT INTO users (username, password, email, first_name, last_name, role, active) 
-VALUES ('supervisor', '$2a$10$slYQmyNdGzSqKYgxDfGc4OPPX0eGf9vGCmNm1kU0xLrN8J8jWdU3K', 'supervisor@flowcore.com', 'John', 'Supervisor', 'SUPERVISOR', true)
+VALUES ('supervisor', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36gBS/O.', 'supervisor@flowcore.com', 'John', 'Supervisor', 'SUPERVISOR', true)
 ON DUPLICATE KEY UPDATE username=username;
 
--- Insert sample contractor user
+-- Insert sample contractor user (password: password)
 INSERT INTO users (username, password, email, first_name, last_name, role, active) 
-VALUES ('contractor', '$2a$10$slYQmyNdGzSqKYgxDfGc4OPPX0eGf9vGCmNm1kU0xLrN8J8jWdU3K', 'contractor@flowcore.com', 'Jane', 'Contractor', 'CONTRACTOR', true)
+VALUES ('contractor', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcg7b3XeKeUxWdeS86E36gBS/O.', 'contractor@flowcore.com', 'Jane', 'Contractor', 'CONTRACTOR', true)
 ON DUPLICATE KEY UPDATE username=username;

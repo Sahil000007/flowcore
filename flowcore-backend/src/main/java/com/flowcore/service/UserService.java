@@ -1,13 +1,15 @@
 package com.flowcore.service;
 
-import com.flowcore.entity.User;
-import com.flowcore.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.flowcore.entity.User;
+import com.flowcore.repository.UserRepository;
 
 @Service
 public class UserService {
@@ -34,12 +36,12 @@ public class UserService {
     public User updateUser(Long id, User userDetails) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        
-        if (!user.getUsername().equals(userDetails.getUsername()) && 
-            userRepository.existsByUsername(userDetails.getUsername())) {
+
+        if (!user.getUsername().equals(userDetails.getUsername()) &&
+                userRepository.existsByUsername(userDetails.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
-        
+
         user.setEmail(userDetails.getEmail());
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
@@ -72,11 +74,11 @@ public class UserService {
     public boolean changePassword(Long id, String oldPassword, String newPassword) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        
+
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new IllegalArgumentException("Old password is incorrect");
         }
-        
+
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);

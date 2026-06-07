@@ -1,12 +1,14 @@
 package com.flowcore.service;
 
-import com.flowcore.entity.Site;
-import com.flowcore.repository.SiteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.flowcore.entity.Site;
+import com.flowcore.repository.SiteRepository;
 
 @Service
 public class SiteService {
@@ -23,7 +25,7 @@ public class SiteService {
     public Site updateSite(Long id, Site siteDetails) {
         Site site = siteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Site not found"));
-        
+
         site.setProjectName(siteDetails.getProjectName());
         site.setLocation(siteDetails.getLocation());
         site.setStartDate(siteDetails.getStartDate());

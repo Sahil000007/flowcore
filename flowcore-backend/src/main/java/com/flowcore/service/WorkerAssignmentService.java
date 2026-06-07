@@ -1,12 +1,14 @@
 package com.flowcore.service;
 
-import com.flowcore.entity.WorkerAssignment;
-import com.flowcore.repository.WorkerAssignmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.flowcore.entity.WorkerAssignment;
+import com.flowcore.repository.WorkerAssignmentRepository;
 
 @Service
 public class WorkerAssignmentService {
@@ -23,7 +25,7 @@ public class WorkerAssignmentService {
     public WorkerAssignment updateAssignment(Long id, WorkerAssignment assignmentDetails) {
         WorkerAssignment assignment = workerAssignmentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Assignment not found"));
-        
+
         assignment.setStatus(assignmentDetails.getStatus());
         assignment.setCompletionDate(assignmentDetails.getCompletionDate());
         assignment.setRemarks(assignmentDetails.getRemarks());

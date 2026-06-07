@@ -1,4 +1,4 @@
-import { Edit2, Plus, Trash2 } from 'lucide-react';
+import { DollarSign, Edit2, Plus, Trash2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Header } from '../components/Header';
 import { Sidebar } from '../components/Sidebar';
@@ -8,6 +8,7 @@ export const Salary = () => {
   const [salaries, setSalaries] = useState([]);
   const [workers, setWorkers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
@@ -35,6 +36,7 @@ export const Salary = () => {
 
   const fetchAll = async () => {
     try {
+      setError('');
       const [salariesRes, workersRes] = await Promise.all([
         salaryService.getAll(),
         workerService.getAll(),
@@ -49,6 +51,8 @@ export const Salary = () => {
       }
     } catch (error) {
       console.error('Error fetching salary/worker data', error);
+      const errorMsg = error.response?.data?.message || 'Failed to load salary data';
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -117,16 +121,21 @@ export const Salary = () => {
       resetForm();
     } catch (error) {
       console.error('Error saving salary', error);
+      const errorMsg = error.response?.data?.message || 'Failed to save salary record';
+      setError(errorMsg);
     }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this salary record?')) return;
     try {
+      setError('');
       await salaryService.delete(id);
       await fetchAll();
     } catch (error) {
       console.error('Error deleting salary', error);
+      const errorMsg = error.response?.data?.message || 'Failed to delete salary record';
+      setError(errorMsg);
     }
   };
 
@@ -137,12 +146,19 @@ export const Salary = () => {
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Header />
-        <main className="flex-1 bg-gray-50 p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-6">
+        <main className="flex-1 bg-gradient-to-br from-slate-50 via-purple-50 to-slate-100 p-8 min-h-screen">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex justify-between items-center mb-12 animate-fade-in">
               <div>
-                <h2 className="text-3xl font-bold text-gray-800">Salary Management</h2>
-                <p className="text-gray-600 text-sm mt-1">Track and manage worker salaries and payroll</p>
+                <div className="flex items-center space-x-4 mb-4">
+                  <div className="bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 text-white p-4 rounded-2xl shadow-lg transform hover:scale-110 transition-all duration-300">
+                    <DollarSign size={32} />
+                  </div>
+                  <div>
+                    <h2 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-1">Salary Management</h2>
+                    <p className="text-gray-600 text-lg">Track and manage worker salaries and payroll</p>
+                  </div>
+                </div>
               </div>
               <button
                 onClick={() => {
@@ -150,10 +166,11 @@ export const Salary = () => {
                   setEditingId(null);
                   setFormData(emptyForm);
                 }}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center space-x-2 transition"
+                className="relative bg-gradient-to-r from-purple-600 via-purple-700 to-purple-800 hover:from-purple-700 hover:via-purple-800 hover:to-purple-900 text-white px-8 py-4 rounded-xl flex items-center space-x-3 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 group overflow-hidden"
               >
-                <Plus size={20} />
-                <span>Add Salary Record</span>
+                <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></span>
+                <Plus size={22} className="group-hover:rotate-90 transition-transform duration-300" />
+                <span className="font-semibold text-lg">Add Salary Record</span>
               </button>
             </div>
 
@@ -173,117 +190,170 @@ export const Salary = () => {
               </div>
             </div>
 
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {error}
+              </div>
+            )}
+
             {showForm && (
-              <div className="bg-white rounded-lg shadow p-6 mb-8">
-                <h3 className="text-xl font-bold mb-4">
-                  {editingId ? 'Edit Salary Record' : 'Add New Salary Record'}
-                </h3>
+              <div className="bg-white rounded-2xl shadow-2xl p-10 mb-8 border-t-4 border-purple-600 backdrop-blur-lg bg-opacity-95 animate-slide-in">
+                <div className="flex items-center space-x-3 mb-8">
+                  <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-3 rounded-lg">
+                    <span className="text-2xl">{editingId ? '✏️' : '💰'}</span>
+                  </div>
+                  <h3 className="text-3xl font-bold text-gray-900">
+                    {editingId ? 'Edit Salary Record' : 'Add New Salary Record'}
+                  </h3>
+                </div>
 
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <select
-                    value={formData.workerId}
-                    onChange={(e) => handleFormChange('workerId', e.target.value)}
-                    className="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    required
-                  >
-                    <option value="" disabled>
-                      Select Worker
-                    </option>
-                    {workers.map((w) => (
-                      <option key={w.id} value={w.id}>
-                        {w.name} ({w.skill})
+                <div className="border-b-2 border-gray-100 mb-8"></div>
+
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Worker *</label>
+                    <select
+                      value={formData.workerId}
+                      onChange={(e) => handleFormChange('workerId', e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+                      required
+                    >
+                      <option value="" disabled>
+                        Select worker from list
                       </option>
-                    ))}
-                  </select>
-
-                  <input
-                    type="month"
-                    value={formData.month}
-                    onChange={(e) => handleFormChange('month', e.target.value)}
-                    className="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    required
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Days Worked"
-                    value={formData.daysWorked}
-                    onChange={(e) => handleFormChange('daysWorked', e.target.value)}
-                    className="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    required
-                    min={0}
-                    max={31}
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Total Wage (₹)"
-                    value={formData.totalWage}
-                    onChange={(e) => handleFormChange('totalWage', e.target.value)}
-                    className="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    required
-                    min={0}
-                    step={0.01}
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Advance (₹)"
-                    value={formData.advance}
-                    onChange={(e) => handleFormChange('advance', e.target.value)}
-                    className="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    min={0}
-                    step={0.01}
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Deduction (₹)"
-                    value={formData.deduction}
-                    onChange={(e) => handleFormChange('deduction', e.target.value)}
-                    className="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                    min={0}
-                    step={0.01}
-                  />
-
-                  <div className="px-4 py-2 border rounded bg-gray-50">
-                    <p className="text-gray-600 text-sm">Net Amount (₹)</p>
-                    <p className="text-2xl font-bold text-green-600">{formData.netAmount.toFixed(2)}</p>
+                      {workers.map((w) => (
+                        <option key={w.id} value={w.id}>
+                          {w.name} ({w.skill})
+                        </option>
+                      ))}
+                    </select>
+                    <p className="text-xs text-gray-500 mt-1">Choose worker for salary record</p>
                   </div>
 
-                  <select
-                    value={formData.status}
-                    onChange={(e) => handleFormChange('status', e.target.value)}
-                    className="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  >
-                    <option value="PENDING">Pending</option>
-                    <option value="APPROVED">Approved</option>
-                    <option value="PAID">Paid</option>
-                    <option value="CANCELLED">Cancelled</option>
-                  </select>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Month *</label>
+                    <input
+                      type="month"
+                      value={formData.month}
+                      onChange={(e) => handleFormChange('month', e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+                      required
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Month for which salary is being recorded</p>
+                  </div>
 
-                  <textarea
-                    placeholder="Remarks/Notes"
-                    value={formData.remarks}
-                    onChange={(e) => handleFormChange('remarks', e.target.value)}
-                    className="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600 md:col-span-2"
-                    rows={3}
-                  />
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Days Worked *</label>
+                    <input
+                      type="number"
+                      placeholder="e.g., 25"
+                      value={formData.daysWorked}
+                      onChange={(e) => handleFormChange('daysWorked', e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+                      required
+                      min={0}
+                      max={31}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Number of days worked in the month</p>
+                  </div>
 
-                  <div className="md:col-span-2 flex space-x-2">
-                    <button
-                      type="submit"
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Total Wage (₹) *</label>
+                    <input
+                      type="number"
+                      placeholder="e.g., 12500"
+                      value={formData.totalWage}
+                      onChange={(e) => handleFormChange('totalWage', e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+                      required
+                      min={0}
+                      step={0.01}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Total wage before deductions</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Advance Paid (₹) (Optional)</label>
+                    <input
+                      type="number"
+                      placeholder="e.g., 5000"
+                      value={formData.advance}
+                      onChange={(e) => handleFormChange('advance', e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+                      min={0}
+                      step={0.01}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Any advance amount already paid to worker</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Deduction (₹) (Optional)</label>
+                    <input
+                      type="number"
+                      placeholder="e.g., 500"
+                      value={formData.deduction}
+                      onChange={(e) => handleFormChange('deduction', e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+                      min={0}
+                      step={0.01}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Any deductions from salary (penalties, loan repayment, etc.)</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Payment Status *</label>
+                    <select
+                      value={formData.status}
+                      onChange={(e) => handleFormChange('status', e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
                     >
-                      {editingId ? 'Update' : 'Add'} Salary Record
-                    </button>
-                    <button
-                      type="button"
-                      onClick={resetForm}
-                      className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded transition"
-                    >
-                      Cancel
-                    </button>
+                      <option value="PENDING">Pending</option>
+                      <option value="APPROVED">Approved</option>
+                      <option value="PAID">Paid</option>
+                      <option value="CANCELLED">Cancelled</option>
+                    </select>
+                    <p className="text-xs text-gray-500 mt-1">Current status of salary payment</p>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Net Amount (₹) - Auto Calculated</label>
+                    <div className="px-4 py-3 border-2 border-purple-300 rounded-lg bg-purple-50">
+                      <p className="text-3xl font-bold text-purple-600">₹{formData.netAmount.toFixed(2)}</p>
+                      <p className="text-xs text-gray-500 mt-1">Total Wage - Advance - Deduction = Net Amount</p>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Remarks (Optional)</label>
+                    <textarea
+                      placeholder="e.g., Bonus given, Promotion salary increase, Sick leave deduction"
+                      value={formData.remarks}
+                      onChange={(e) => handleFormChange('remarks', e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+                      rows={3}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Any additional notes or remarks about this salary</p>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <div className="border-t-2 border-gray-100 pt-8"></div>
+                    <div className="flex space-x-4 mt-4">
+                      <button
+                        type="submit"
+                        className="flex-1 bg-gradient-to-r from-purple-600 via-purple-700 to-purple-800 hover:from-purple-700 hover:via-purple-800 hover:to-purple-900 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:scale-105 group flex items-center justify-center space-x-2"
+                      >
+                        <span>{editingId ? '📝' : '💰'}</span>
+                        <span>{editingId ? 'Update Salary' : 'Add Salary Record'}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={resetForm}
+                        className="flex-1 bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center space-x-2"
+                      >
+                        <span>❌</span>
+                        <span>Cancel</span>
+                      </button>
+                    </div>
                   </div>
                 </form>
               </div>

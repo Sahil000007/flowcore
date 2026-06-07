@@ -1,12 +1,14 @@
 package com.flowcore.service;
 
-import com.flowcore.entity.Worker;
-import com.flowcore.repository.WorkerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.flowcore.entity.Worker;
+import com.flowcore.repository.WorkerRepository;
 
 @Service
 public class WorkerService {
@@ -29,12 +31,12 @@ public class WorkerService {
     public Worker updateWorker(Long id, Worker workerDetails) {
         Worker worker = workerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Worker not found"));
-        
-        if (!worker.getPhone().equals(workerDetails.getPhone()) && 
-            workerRepository.existsByPhone(workerDetails.getPhone())) {
+
+        if (!worker.getPhone().equals(workerDetails.getPhone()) &&
+                workerRepository.existsByPhone(workerDetails.getPhone())) {
             throw new IllegalArgumentException("Phone number already exists");
         }
-        
+
         worker.setName(workerDetails.getName());
         worker.setSkill(workerDetails.getSkill());
         worker.setDailyWage(workerDetails.getDailyWage());

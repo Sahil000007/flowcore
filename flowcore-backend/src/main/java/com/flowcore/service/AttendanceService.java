@@ -1,15 +1,17 @@
 package com.flowcore.service;
 
-import com.flowcore.entity.Attendance;
-import com.flowcore.entity.Worker;
-import com.flowcore.entity.Site;
-import com.flowcore.repository.AttendanceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.flowcore.entity.Attendance;
+import com.flowcore.entity.Site;
+import com.flowcore.entity.Worker;
+import com.flowcore.repository.AttendanceRepository;
 
 @Service
 public class AttendanceService {
@@ -26,7 +28,7 @@ public class AttendanceService {
     public Attendance updateAttendance(Long id, Attendance attendanceDetails) {
         Attendance attendance = attendanceRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Attendance record not found"));
-        
+
         attendance.setStatus(attendanceDetails.getStatus());
         attendance.setHoursWorked(attendanceDetails.getHoursWorked());
         attendance.setOvertimeHours(attendanceDetails.getOvertimeHours());
