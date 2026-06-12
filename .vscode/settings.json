@@ -1,0 +1,13 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "mysql": true,
+        "%i": true,
+        "1,1,5": true,
+        "do": true,
+        "mvn clean": true,
+        "java": true,
+        "npm run dev": true,
+        "netstat": true
+    },
+    "java.compile.nullAnalysis.mode": "disabled"
+}
