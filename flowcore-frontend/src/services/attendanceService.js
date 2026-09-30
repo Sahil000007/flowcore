@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'http://localhost:8080/api';
+import { API_BASE_URL } from '../constants';
 
 const attendanceService = axios.create({
   baseURL: API_BASE_URL,
@@ -24,4 +23,3 @@ const attendanceApi = {
 };
 
 export default attendanceApi;
-

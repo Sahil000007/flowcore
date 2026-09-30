@@ -1,6 +1,9 @@
 .gitignore content:
 # Backend
 flowcore-backend/target/
+flowcore-backend/data/
+flowcore-backend/.env
+flowcore-backend/.env.*
 flowcore-backend/.classpath
 flowcore-backend/.project
 flowcore-backend/.settings/

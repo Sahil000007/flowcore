@@ -1,6 +1,7 @@
 package com.flowcore.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,11 +19,39 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Value("${app.seed-demo-users:true}")
+    private boolean seedDemoUsers;
+
+    @Value("${ADMIN_INITIAL_PASSWORD:}")
+    private String initialAdminPassword;
+
     @Override
     public void run(String... args) throws Exception {
 
-        // Initialize test users if they don't exist
-        initializeTestUsers();
+        if (seedDemoUsers) {
+            initializeTestUsers();
+        } else {
+            initializeProductionAdmin();
+        }
+    }
+
+    private void initializeProductionAdmin() {
+        if (userRepository.existsByUsername("admin")) {
+            return;
+        }
+        if (initialAdminPassword == null || initialAdminPassword.isBlank()) {
+            throw new IllegalStateException("Set ADMIN_INITIAL_PASSWORD when demo user seeding is disabled");
+        }
+
+        User adminUser = new User();
+        adminUser.setUsername("admin");
+        adminUser.setPassword(passwordEncoder.encode(initialAdminPassword));
+        adminUser.setEmail("admin@flowcore.com");
+        adminUser.setFirstName("Admin");
+        adminUser.setLastName("User");
+        adminUser.setRole(UserRole.ADMIN);
+        adminUser.setActive(true);
+        userRepository.save(adminUser);
     }
 
     private void initializeTestUsers() {

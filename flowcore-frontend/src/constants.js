@@ -44,7 +44,7 @@ export const USER_ROLES = {
 };
 
 // Common API Constants
-export const API_BASE_URL = 'http://localhost:8080/api';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 export const API_TIMEOUT = 30000; // 30 seconds
 
 // Pagination
@@ -63,21 +63,6 @@ export const MESSAGES = {
   CONFIRM_DELETE: 'Are you sure you want to delete this record?',
   NO_DATA: 'No data available.',
   LOADING: 'Loading...',
-};
-
-export const SITE_STATUS = {
-  ACTIVE: 'ACTIVE',
-  COMPLETED: 'COMPLETED',
-  ON_HOLD: 'ON_HOLD',
-  CANCELLED: 'CANCELLED',
-};
-
-export const ATTENDANCE_STATUS = {
-  PRESENT: 'PRESENT',
-  ABSENT: 'ABSENT',
-  HALF_DAY: 'HALF_DAY',
-  OVERTIME: 'OVERTIME',
-  LEAVE: 'LEAVE',
 };
 
 export const USER_ROLE = {

@@ -58,6 +58,16 @@ public class SalaryRecord {
 
     private String paymentMethod;
 
+    private String bankAccount;
+
+    private String ifsc;
+
+    private String upiId;
+
+    private String paymentReference;
+
+    private String thirdPartyProvider;
+
     private String remarks;
 
     @Column(nullable = false)
