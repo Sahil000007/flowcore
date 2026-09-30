@@ -4,7 +4,12 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = 8080;
-const JWT_SECRET = 'FlowCore_JWT_Secret_Key_2026_Contractor_Management_System_Production_Grade';
+const JWT_SECRET = process.env.JWT_SECRET;
+const MOCK_ADMIN_PASSWORD = process.env.MOCK_ADMIN_PASSWORD;
+const MOCK_SUPERVISOR_PASSWORD = process.env.MOCK_SUPERVISOR_PASSWORD;
+if (!JWT_SECRET || !MOCK_ADMIN_PASSWORD || !MOCK_SUPERVISOR_PASSWORD) {
+  throw new Error('Set JWT_SECRET, MOCK_ADMIN_PASSWORD, and MOCK_SUPERVISOR_PASSWORD before starting the mock API server');
+}
 
 app.use(cors({
   origin: ['http://localhost:3000', 'http://localhost:5173'],
@@ -14,8 +19,8 @@ app.use(express.json());
 
 // Mock user database
 const users = {
-  'admin': { id: 1, username: 'admin', password: 'admin123', role: 'ADMIN', userId: 1 },
-  'supervisor': { id: 2, username: 'supervisor', password: 'supervisor123', role: 'SUPERVISOR', userId: 2 }
+  'admin': { id: 1, username: 'admin', password: MOCK_ADMIN_PASSWORD, role: 'ADMIN', userId: 1 },
+  'supervisor': { id: 2, username: 'supervisor', password: MOCK_SUPERVISOR_PASSWORD, role: 'SUPERVISOR', userId: 2 }
 };
 
 // Mock workers database

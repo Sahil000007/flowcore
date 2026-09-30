@@ -24,7 +24,6 @@ Set these backend environment variables using the MySQL provider's connection va
 SPRING_DATASOURCE_URL=jdbc:mysql://<mysql-host>:<mysql-port>/<database>?useSSL=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
 SPRING_DATASOURCE_USERNAME=<mysql-username>
 SPRING_DATASOURCE_PASSWORD=<mysql-password>
-SEED_DEMO_USERS=false
 ADMIN_INITIAL_PASSWORD=<a unique strong password>
 JWT_SECRET=<a long random secret>
 CORS_ALLOWED_ORIGINS=https://<your-vercel-domain>

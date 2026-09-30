@@ -13,8 +13,6 @@ services:
         sync: false
       - key: SPRING_DATASOURCE_PASSWORD
         sync: false
-      - key: SEED_DEMO_USERS
-        value: "false"
       - key: ADMIN_INITIAL_PASSWORD
         sync: false
       - key: JWT_SECRET

@@ -1,5 +1,7 @@
 .gitignore content:
 # Backend
+/node_modules/
+/flowcore-backend.zip
 flowcore-backend/target/
 flowcore-backend/data/
 flowcore-backend/.env
